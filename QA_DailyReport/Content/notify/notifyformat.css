@@ -1,0 +1,28 @@
+﻿.notifyjs-corner{
+	font-size:14px;
+    bottom: 50px !important;
+}
+.notifyjs-bootstrap-base{
+    font-weight:100 !important;
+}
+
+.notifyjs-bootstrap-error {
+    color: white;
+    background-color: #ff8080;
+}
+.notifyjs-bootstrap-info {
+    color: white;
+    background-color: #0553b1;
+}
+.notifyjs-bootstrap-success {
+    color: white;
+    background-color: #79d279;
+}
+
+.notifyjs-bootstrap-base {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0);
+    border: 0px solid #fbeed5;
+    /*-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;*/ 
+}

@@ -1,0 +1,588 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@* link for customize Javascript *@
+
+
+
+
+@* custom query *@
+<script src="~/Content/globaldeclaration.js"></script>
+<script src="~/Content/convertdate/xgetdate.js"></script>
+<script src="~/Content/QAScript/QATurnOver.js"></script>
+<script src="~/Content/QAScript/QADailyReport.js"></script>
+<script src="~/Content/QAScript/QAStatistics.js"></script>
+<script src="~/Content/QAScript/clearfields.js"></script>
+<script src="~/Content/validation/statval.js"></script>
+<script src="~/Content/validation/qtoval.js"></script>
+
+
+<style>
+    .has-error {
+        color: red;
+    }
+</style>
+<script>
+
+    //original code working
+
+    @*var TsData =
+          {
+              labels: [@Html.Raw(ViewBag.FileNo_List)],
+
+              datasets: [
+                  {
+                      label: 'TS',
+                      borderWidth: 1,
+                      backgroundColor: '#D3D3D3',
+                      data: [@ViewBag.TS_List]
+                  }
+              ]
+          };
+
+    var YsData =
+         {
+             labels: [@Html.Raw(ViewBag.FileNo_List)],
+
+             datasets: [
+                 {
+                     label: 'YS',
+                     borderWidth: 1,
+                     backgroundColor: '#D3D3D3',
+                     data: [@ViewBag.YS_List]
+                 }
+             ]
+         };
+
+    window.onload = function () {
+        var ctx1 = document.getElementById("tslines").getContext("2d");
+        window.myBar = new Chart(ctx1,
+            {
+                type: 'line',
+                data: TsData,
+                options:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: "Tensile Strength"
+                        },
+                        responsive: true,
+                        maintainAspectRatio: true,
+
+                    }
+            });
+        var ctx2 = document.getElementById("yslines").getContext("2d");
+        window.myBar = new Chart(ctx2,
+            {
+                type: 'line',
+                data: YsData,
+                options:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: "Yield Strength"
+                        },
+                        responsive: true,
+                        maintainAspectRatio: true,
+
+                    }
+            });
+    }*@
+
+</script>
+
+
+<div class="container-fluid">
+    @*<div class="page-header">
+            <h1>QA Reports<span class="pull-right label label-default"></span></h1>
+        </div>*@
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="TurnOver-tab" data-toggle="tab" href="#TurnOver" role="tab" aria-controls="TurnOver" aria-selected="true">
+                        <strong>QA Turn-Over Reportst </strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="QAReport-tab" data-toggle="tab" href="#QAReport" role="tab" aria-controls="finish" aria-selected="false">
+                        <strong>Daily QA Report</strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="Statistical-tab" data-toggle="tab" href="#Statistical" role="tab" aria-controls="Statistical" aria-selected="false">
+                        <strong>Statistical Process Control</strong>
+                    </a>
+                </li>
+
+            </ul>
+            <br />
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="TurnOver" role="tabpanel" aria-labelledby="TurnOver-tab">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <input type="text" id="txtsearch" class="form-control" placeholder="Searh QA..." />
+                            </div>
+                            <div class="col-md-2">
+                                <button id="btnAddNew" class=" btn btn-primary" data-toggle="modal" data-target="#AddQTOModal">Add Turn Over</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="clearfix"></div>
+                            <input type="hidden" id="htxtsave" />
+                            <table id="tblusers" class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th>Report Date</th>
+                                        <th>Shift</th>
+                                        <th>Diameter</th>
+                                        <th>Prepared by</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblqto"></tbody>
+                            </table>
+                            <button id="qto-list-loadmore" class="btn btn-primary">Loadmore</button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="QAReport" role="tabpanel" aria-labelledby="QAReport-tab">
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-md-8">
+                                <input type="text" id="txtsearchqarpt" class="form-control" placeholder="Searh QA..." />
+                            </div>
+                            <div class="col-md-2">
+                                <button id="btnLoadMoreDailyRPT" class=" btn btn-success">Load more...</button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button id="btnViewDailyRPT" class=" btn btn-primary" data-toggle="modal" data-target="#DailyRpt">Add Turn Over</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2">
+
+                            </div>
+                            <div class="col-md-8">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Report Date</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbldaily"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="Statistical" class="tab-pane fade">
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-md-2">
+
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" id="txtsearchstat" class="form-control" placeholder="Searh QA..." />
+                            </div>
+
+                            <div class="col-md-2">
+                                <button id="bntLoadMoreStatistics" class=" btn btn-success">Load more...</button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button id="bntAddStatistics" class=" btn btn-primary" data-toggle="modal" data-target="#StatRpt">Add Statistics</button>
+                            </div>
+
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-2">
+
+                            </div>
+                            <div class="col-md-8">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Report Date</th>
+                                                <th>Shift</th>
+                                                <th>Diameter</th>
+                                                <th>Prepared by</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblstat"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    @* Modal area *@
+
+    <div class="modal" tabindex="-1" role="dialog" id="AddQTOModal">
+        <form id="qtoadd">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">QA Turnover Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <input type="hidden" id="htxtReportID" />
+                            <label for="exampleFormControlInput1">Shift</label>
+                            <select id="select-ssShift" name="nShift" class="js-example-basic-single" style="width:100%">
+                                <option value=""></option>
+                                <option value="1">1st Shift</option>
+                                <option value="2">2nd Shift</option>
+                                <option value="3">3rd Shift</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Diameter</label>
+                            <select id="select-ssdiameter" name="nSize" class="js-example-basic-single" style="width:100%"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect2">Rebar Test</label>
+                            <input type="text" id="txtRebarTest" name="nRebarTest" placeholder="Rebar Test" class=" form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Tempcore</label>
+                            <input type="text" id="txtTempcore" name="nTempcore" placeholder="Tempcore" class=" form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Tempcore</label>
+                            <input type="text" id="txtSampler" name="nSampler" placeholder="Sampler" class=" form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Water Content</label>
+                            <input type="text" id="txtWaterContent" name="nWaterContent" placeholder="Water Content" class=" form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">QA Staff</label>
+                            <select id="select-qastaff" name="nStaff" class="js-example-basic-single" style="width:100%"></select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnadd" class="btn btn-primary">Save</button>
+                        @*<button id="btnupdate" class="btn btn-success" data-dismiss="modal">Update</button>*@
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="DailyRpt" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" style="width: 100%;" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">QA Daily Reports</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input type="text" id="txtFilterDailyRpt" class="form-control" placeholder="Searh Daily Report..." />
+                        </div>
+                        <div class="col-md-2">
+                            <button id="rpt-list-loadmore" class="btn btn-primary">Load more...</button>
+                        </div>
+                    </div>
+                </div>
+                @*<form id="dailyrpt">*@
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tblDaily">
+                            <thead>
+                                <tr>
+                                    <th>File Number</th>
+                                    <th>Test Date</th>
+                                    <th>Diameter</th>
+                                    <th>Batch No</th>
+                                    <th>Grade</th>
+                                    <th>Yield Strength</th>
+                                    <th>Tensile Strength</th>
+                                    <th>TSYS</th>
+                                    <th>% E</th>
+                                    <th>Ave. Spacing (mm)</th>
+                                    <th>Ave. Height (mm)</th>
+                                    <th>Sum of Gaps (mm)</th>
+                                    <th>Variation in Mass (mm)</th>
+                                    <th>Bend Test</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblqarpt"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnSaveRpt" class="btn btn-primary">Save Daily Report</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                @*</form>*@
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="ViewDailyRpt" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" style="width: 100%;" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">QA Daily Reports Summary</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input type="text" id="txtFilterDailyRptSummary" class="form-control" placeholder="Searh Daily Report..." />
+                            <input id="htxtReportDate" type="hidden" />
+                        </div>
+                        <div class="col-md-2">
+                            <button id="summary-list-loadmore" class="btn btn-primary">Load more...</button>
+                        </div>
+                    </div>
+                </div>
+                @*<form id="dailyrpt">*@
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover tblSummary" id="tblDaily">
+                            <thead>
+                                <tr>
+                                    <th>File Number</th>
+                                    <th>Test Date</th>
+                                    <th>Diameter</th>
+                                    <th>Batch No</th>
+                                    <th>Grade</th>
+                                    <th>Yield Strength</th>
+                                    <th>Tensile Strength</th>
+                                    <th>TSYS</th>
+                                    <th>% E</th>
+                                    <th>Ave. Spacing (mm)</th>
+                                    <th>Ave. Height (mm)</th>
+                                    <th>Sum of Gaps (mm)</th>
+                                    <th>Variation in Mass (mm)</th>
+                                    <th>Bend Test</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblqarptsummary"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnPrintRpt" class="btn btn-primary">Export</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                @*</form>*@
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="StatRpt" data-backdrop="static" data-keyboard="false">
+        <form id="xstat">
+        <div class="modal-dialog modal-lg" style="width: 100%;" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">QA Daily Reports</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    @*<div class="row">
+                        <div class="col-md-10">
+                            <input type="text" id="txtFilterStat" class="form-control" placeholder="Searh Daily Report..." />
+                        </div>
+                        <div class="col-md-2">
+                            <button id="stat-list-loadmore" class="btn btn-primary">Load more...</button>
+                        </div>
+                    </div>*@
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleFormControlTextarea1">QA Staff</label>
+                                <select id="select-qastaffstat" name="nStaffStat" class="js-example-basic-single" style="width:100%"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Diameter</label>
+                                <select id="select-ssdiameterstat" name="nSizeStat" class="js-example-basic-single" style="width:100%"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="hidden" id="htxtReportID" />
+                                <label for="exampleFormControlInput1">Shift</label>
+                                <select id="select-ssShiftstat" name="nShiftStat" class="js-example-basic-single xselect" style="width:100%">
+                                    <option value=""></option>
+                                    <option value="1">1st Shift</option>
+                                    <option value="2">2nd Shift</option>
+                                    <option value="3">3rd Shift</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tblStatData">
+                            <thead>
+                                <tr>
+                                    <th>File Number</th>
+                                    <th>Test Date</th>
+                                    <th>Diameter</th>
+                                    <th>Yield Strength</th>
+                                    <th>Tensile Strength</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblphystat"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnSaveStat" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>            
+            </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="StatDetails" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" style="width: 100%;" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">QA Daily Reports</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input type="text" id="txtFilterStatdetails" class="form-control" placeholder="Searh Daily Report..." />
+                        </div>
+                        <div class="col-md-2">
+                            <button id="stat-listdetail-loadmore" class="btn btn-primary">Load more...</button>
+                        </div>
+                    </div>
+                </div>
+                <form id="xstat">
+                    <div class="modal-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tblStatData">
+                                <thead>
+                                    <tr>
+                                        <th>File Number</th>
+                                        <th>Test Date</th>
+                                        <th>Diameter</th>
+                                        <th>Yield Strength</th>
+                                        <th>Tensile Strength</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblstatdetails"></tbody>
+                            </table>
+                        </div>
+
+                        <input id="htxtdateproduced" type="hidden" />
+                        <input id="htxtdiameter" type="hidden" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                @*<canvas id="tslines"></canvas>*@
+                                @*<div id="tslines" style="height: 250px; width: 100%;"></div>*@
+                                <div id="tslines" style="height: 370px; width: 100%;"></div>
+                                @*<button class="btn btn-success id='view-" data-toggle="modal" data-target="#StatGraph">View TS Graph</button>*@
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                @*<canvas id="yslines"></canvas>*@
+                                @*<div id="yslines" style="height: 250px; width: 100%;"></div>*@
+                                <div id="yslines" style="height: 370px; width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            @*<button type="submit" id="btnSaveStat" class="btn btn-primary">Save</button>*@
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
